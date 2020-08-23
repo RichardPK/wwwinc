@@ -10,7 +10,6 @@ const AppWrapper = styled.div`
   min-height: 100vh;
   width: 100vw;
   font-size: calc(10px + 2vmin);
-  color: white;
 `;
 
 export default App;
