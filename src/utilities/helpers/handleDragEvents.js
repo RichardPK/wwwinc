@@ -9,9 +9,8 @@ const defaultEventHandlers = (e) => {
   e.stopPropagation();
 };
 
-export const handleDragStart = ({ event, data, dispatch }) => {
+export const handleDragStart = (event) => {
   defaultEventHandlers(event);
-  console.log("handleDragStart");
 };
 
 export const handleDragEnter = ({ event, data, dispatch }) => {

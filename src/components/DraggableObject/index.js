@@ -4,47 +4,42 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
+import { handleDragStart } from "../../utilities/helpers/handleDragEvents";
 import styled from "styled-components/macro";
 import { W, INC } from "../../consts/droppableTypes";
 
 const DraggableObject = forwardRef((props, ref) => {
-  const { type, onDragStart, setGrabbedElement, grabbedElement } = props;
+  const { type, setGrabbedElement, grabbedElement } = props;
   const draggableElement = useRef(null);
   const [grabbed, setGrabbed] = useState(false);
   const [X, setX] = useState("0px");
   const [Y, setY] = useState("0px");
 
   const onMouseDown = (event) => {
-    console.log("mouse down");
     setGrabbed(true);
     if (!grabbedElement) {
       setGrabbedElement(draggableElement);
     }
-    console.log(`objectX: ${X}`);
-    console.log(`objectY: ${Y}`);
-
-    moveElement(event.pageX, event.pageY);
-  };
-
-  const moveElement = (pageX, pageY) => {
-    setX(pageX - draggableElement.current.offsetWidth / 2 + "px");
-    setY(pageY - draggableElement.current.offsetHeight / 2 + "px");
   };
 
   useImperativeHandle(ref, () => ({
     moveElement(pageX, pageY) {
-      setX(pageX - draggableElement.current.offsetWidth / 2 + "px");
-      setY(pageY - draggableElement.current.offsetHeight / 2 + "px");
+      if (grabbed) {
+        setX(pageX - draggableElement.current.offsetWidth / 2 + "px");
+        setY(pageY - draggableElement.current.offsetHeight / 2 + "px");
+      }
     },
   }));
 
   return (
     <Wrapper
       draggable
-      onDragStart={onDragStart}
+      onDragStart={(event) => handleDragStart(event)}
       onMouseDown={(event) => onMouseDown(event)}
-      onMouseUp={() => setGrabbed(false)}
-      // onMouseLeave={() => setGrabbed(false)}
+      onMouseUp={() => {
+        setGrabbed(false);
+        setGrabbedElement(false);
+      }}
       ref={draggableElement}
       left={X}
       top={Y}
@@ -65,7 +60,6 @@ const Wrapper = styled.div.attrs((props) => ({
     top: props.top,
   },
 }))`
-  padding: 1rem;
   position: absolute;
   z-index: 1000;
   cursor: grab;
@@ -75,7 +69,7 @@ const Wrapper = styled.div.attrs((props) => ({
 
 const Inner = styled.div`
   background-color: green;
-  padding: 1rem;
+  padding: 0.5rem;
 `;
 
 const DraggableText = styled.span`

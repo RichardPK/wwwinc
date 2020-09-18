@@ -35,7 +35,6 @@ const DragAndDropZone = (props) => {
     >
       <DraggableObject
         type={W}
-        onDragStart={(event) => handleDragStart({ event, data, dispatch })}
         ref={childRef}
         setGrabbedElement={setGrabbedElement}
         grabbedElement={grabbedElement}
