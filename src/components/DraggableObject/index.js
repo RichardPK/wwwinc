@@ -6,8 +6,8 @@ const DraggableObject = (props) => {
   const { type, onDragStart } = props;
   const draggableElement = useRef(null);
   const [grabbed, setGrabbed] = useState(false);
-  const [X, setX] = useState(0);
-  const [Y, setY] = useState(0);
+  const [X, setX] = useState("0px");
+  const [Y, setY] = useState("0px");
 
   const onMouseDown = (event) => {
     console.log("mouse down");
@@ -59,8 +59,8 @@ export default DraggableObject;
 
 const Wrapper = styled.div`
   position: absolute;
-  left: ${(props) => props.X};
-  top: ${(props) => props.Y};
+  left: ${(props) => props.left};
+  top: ${(props) => props.top};
   z-index: 1000;
   cursor: grab;
   display: inline;
