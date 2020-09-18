@@ -12,20 +12,22 @@ const DropZone = (props) => {
   const { data, dispatch } = props;
 
   return (
-    <Wrapper
+    <DraggableAreaOuter
+      inDropZone={data.inDropZone}
       onDrop={(event) => handleDrop({ event, data, dispatch })}
-      onDragOver={(event) => handleDragOver(event)}
+      onDragOver={(event) => handleDragOver({ event, data, dispatch })}
       onDragEnter={(event) => handleDragEnter({ event, data, dispatch })}
       onDragLeave={(event) => handleDragLeave({ event, data, dispatch })}
     >
       <DraggableObject />
-    </Wrapper>
+    </DraggableAreaOuter>
   );
 };
 
 export default DropZone;
 
-const Wrapper = styled.div`
-  background-color: #282c34;
+const DraggableAreaOuter = styled.div`
+  background-color: ${(props) => (props.inDropZone ? "tomato" : "red")};
+  transition: color 0.3s ease-out;
   width: 80%;
 `;
