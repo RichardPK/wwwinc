@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import styled from "styled-components/macro";
-import DropZone from "../components/DropZone";
+import DragAndDropZone from "../components/DropZone";
 import {
   SET_DROP_DEPTH,
   SET_IN_DROP_ZONE,
@@ -30,7 +30,7 @@ const App = () => {
 
   return (
     <AppWrapper>
-      <DropZone data={data} dispatch={dispatch} />
+      <DragAndDropZone data={data} dispatch={dispatch} />
       <ol className="dropped-files">
         {data.fileList.map((f) => {
           return <li key={f.name}>{f.name}</li>;

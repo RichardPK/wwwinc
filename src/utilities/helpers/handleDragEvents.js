@@ -9,20 +9,28 @@ const defaultEventHandlers = (e) => {
   e.stopPropagation();
 };
 
+export const handleDragStart = ({ event, data, dispatch }) => {
+  defaultEventHandlers(event);
+  console.log("handleDragStart");
+};
+
 export const handleDragEnter = ({ event, data, dispatch }) => {
   defaultEventHandlers(event);
   dispatch({ type: SET_DROP_DEPTH, dropDepth: data.dropDepth + 1 });
 };
+
 export const handleDragLeave = ({ event, data, dispatch }) => {
   defaultEventHandlers(event);
   dispatch({ type: SET_DROP_DEPTH, dropDepth: data.dropDepth - 1 });
   dispatch({ type: SET_IN_DROP_ZONE, inDropZone: false });
 };
+
 export const handleDragOver = ({ event, data, dispatch }) => {
   defaultEventHandlers(event);
   event.dataTransfer.dropEffect = "copy";
   dispatch({ type: SET_IN_DROP_ZONE, inDropZone: true });
 };
+
 export const handleDrop = ({ event, data, dispatch }) => {
   defaultEventHandlers(event);
   let files = [...event.dataTransfer.files];
