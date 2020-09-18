@@ -26,6 +26,8 @@ const App = () => {
     fileList: [],
   });
 
+  console.log(`drop depth: ${data.dropDepth}`);
+
   return (
     <AppWrapper>
       <DropZone data={data} dispatch={dispatch} />

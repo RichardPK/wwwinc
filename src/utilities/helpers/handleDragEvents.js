@@ -16,7 +16,6 @@ export const handleDragEnter = ({ event, data, dispatch }) => {
 export const handleDragLeave = ({ event, data, dispatch }) => {
   defaultEventHandlers(event);
   dispatch({ type: SET_DROP_DEPTH, dropDepth: data.dropDepth - 1 });
-  if (data.dropDepth > 0) return;
   dispatch({ type: SET_IN_DROP_ZONE, inDropZone: false });
 };
 export const handleDragOver = ({ event, data, dispatch }) => {
