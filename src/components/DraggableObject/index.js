@@ -19,11 +19,6 @@ const DraggableObject = (props) => {
     moveElement(event.pageX, event.pageY);
   };
 
-  const onMouseUp = (event) => {
-    console.log("mouse up");
-    setGrabbed(false);
-  };
-
   const onMouseMove = (event) => {
     if (grabbed) {
       console.log("moving while grabbed");
@@ -42,8 +37,9 @@ const DraggableObject = (props) => {
       draggable
       onDragStart={onDragStart}
       onMouseDown={(event) => onMouseDown(event)}
-      onMouseUp={(event) => onMouseUp(event)}
       onMouseMove={(event) => onMouseMove(event)}
+      onMouseUp={() => setGrabbed(false)}
+      onMouseLeave={() => setGrabbed(false)}
       ref={draggableElement}
       left={X}
       top={Y}
@@ -57,10 +53,14 @@ const DraggableObject = (props) => {
 
 export default DraggableObject;
 
-const Wrapper = styled.div`
+const Wrapper = styled.div.attrs((props) => ({
+  style: {
+    left: props.left,
+    top: props.top,
+  },
+}))`
+  padding: 1rem;
   position: absolute;
-  left: ${(props) => props.left};
-  top: ${(props) => props.top};
   z-index: 1000;
   cursor: grab;
   display: inline;
