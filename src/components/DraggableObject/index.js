@@ -1,9 +1,14 @@
-import React, { useState, useRef } from "react";
+import React, {
+  useState,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import styled from "styled-components/macro";
 import { W, INC } from "../../consts/droppableTypes";
 
-const DraggableObject = (props) => {
-  const { type, onDragStart } = props;
+const DraggableObject = forwardRef((props, ref) => {
+  const { type, onDragStart, setGrabbedElement, grabbedElement } = props;
   const draggableElement = useRef(null);
   const [grabbed, setGrabbed] = useState(false);
   const [X, setX] = useState("0px");
@@ -12,19 +17,13 @@ const DraggableObject = (props) => {
   const onMouseDown = (event) => {
     console.log("mouse down");
     setGrabbed(true);
-
+    if (!grabbedElement) {
+      setGrabbedElement(draggableElement);
+    }
     console.log(`objectX: ${X}`);
     console.log(`objectY: ${Y}`);
 
     moveElement(event.pageX, event.pageY);
-  };
-
-  const onMouseMove = (event) => {
-    if (grabbed) {
-      console.log("moving while grabbed");
-      moveElement(event.pageX, event.pageY);
-    }
-    return;
   };
 
   const moveElement = (pageX, pageY) => {
@@ -32,27 +31,34 @@ const DraggableObject = (props) => {
     setY(pageY - draggableElement.current.offsetHeight / 2 + "px");
   };
 
+  useImperativeHandle(ref, () => ({
+    moveElement(pageX, pageY) {
+      setX(pageX - draggableElement.current.offsetWidth / 2 + "px");
+      setY(pageY - draggableElement.current.offsetHeight / 2 + "px");
+    },
+  }));
+
   return (
     <Wrapper
       draggable
       onDragStart={onDragStart}
       onMouseDown={(event) => onMouseDown(event)}
-      onMouseMove={(event) => onMouseMove(event)}
       onMouseUp={() => setGrabbed(false)}
-      onMouseLeave={() => setGrabbed(false)}
+      // onMouseLeave={() => setGrabbed(false)}
       ref={draggableElement}
       left={X}
       top={Y}
     >
-      <DraggableText>
-        {type === W ? `W` : type === INC ? "inc." : null}
-      </DraggableText>
+      <Inner>
+        <DraggableText>
+          {type === W ? `W` : type === INC ? "inc." : null}
+        </DraggableText>
+      </Inner>
     </Wrapper>
   );
-};
+});
 
 export default DraggableObject;
-
 const Wrapper = styled.div.attrs((props) => ({
   style: {
     left: props.left,
@@ -64,7 +70,12 @@ const Wrapper = styled.div.attrs((props) => ({
   z-index: 1000;
   cursor: grab;
   display: inline;
+  background-color: lime;
+`;
+
+const Inner = styled.div`
   background-color: green;
+  padding: 1rem;
 `;
 
 const DraggableText = styled.span`

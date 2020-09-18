@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import styled from "styled-components/macro";
-import DragAndDropZone from "../components/DropZone";
+import DragAndDropZone from "../components/DragAndDropZone";
 import {
   SET_DROP_DEPTH,
   SET_IN_DROP_ZONE,
